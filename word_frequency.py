@@ -1,3 +1,6 @@
+import operator
+import re
+
 STOP_WORDS = [
     'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for', 'from', 'has', 'he',
     'i', 'in', 'is', 'it', 'its', 'of', 'on', 'that', 'the', 'to', 'were',
@@ -5,32 +8,43 @@ STOP_WORDS = [
 ]
 
 
-def print_word_freq(file):
-    """Read in `file` and print out the frequency of words in that file"""
-    # Open and read the file
-    with open(file) as my_file:
-        my_file = my_file.read()
-        my_file = clean_text(my_file)
-    print(my_file)
-
-    # Remove punctuation
-def clean_text(text):
-    """Removes punctuation from text"""
-    text = text.replace(",", "").replace("!", "").replace(".", "")
-    # Lowercase everything
-    text = text.lower()
-    text = text.split(" ")
-    
-    #  Remove the Stop Words listed above
-    for word in list(text):
-        if word in STOP_WORDS:
-            print(word)
-            text.remove(word)
-    return text
-  
+# 
+f = open("seneca_falls.txt")
+text_to_read = (f.read())
+lower_case_text = text_to_read.lower()
+clean_text = re.sub('[^A-Za-z]', ' ', lower_case_text)
+split_word_text = clean_text.split()
+# that splits the words
+list_of_words = []
+for word in split_word_text:
+    if word not in STOP_WORDS:
+        list_of_words.append(word)
 
 
     # Keep count of how often word is used
+def get_second_item(seq):
+    return seq[1]
+
+def print_freq(frequency):
+    print("\n\nFrequency\n==========")
+    for word, frq in frequency:
+        print(word, frq)
+def count_freq(text):
+
+#     # create an empty dictionary
+    master_list = {}
+#     # create a for loop
+    for word in list_of_words:
+        if master_list.get(word) == None:
+            master_list[word] = 1
+        else: 
+            master_list[word] += 1
+#     # now we creat a list because sort dictiionary the way we need to
+    sorted_list = sorted(master_list.items(), key=operator.itemgetter(1), reverse=True)
+#     # reverse=True so that it sorts in descending instead of ascending order
+    print(sorted_list)
+
+count_freq(list_of_words)
 
     # Use dictionary to print out frequency
 
